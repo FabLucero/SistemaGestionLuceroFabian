@@ -1,0 +1,66 @@
+﻿@inject NavigationManager NavigationManager
+@inject UsuariosService Service
+
+<EditForm Model="Usuario" OnValidSubmit="CreateOrUpdateUser" FormName="usuarios-form">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+    <div class="form-group">
+        <label for="nombre">Nombre</label>            
+        <InputText type="text" class="form-control" id="nombre" @bind-Value="Usuario.Nombre" />
+    </div>
+    <div class="form-group">
+        <label for="apellido">Apellido</label>           
+        <InputText type="text" class="form-control" id="apellido" @bind-Value="Usuario.Apellido" />
+    </div>
+    <div class="form-group">
+        <label for="nombreUsuario">NombreUsuario</label>       
+        <InputText type="text" class="form-control" id="nombreUsuario" @bind-Value="Usuario.NombreUsuario" />        
+    </div>
+    <div class="form-group">
+        <label for="contraseña">Contraseña</label>          
+        <InputText type="password" class="form-control" id="contraseña" @bind-Value="Usuario.Contraseña" />
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>           
+        <InputText type="text" class="form-control" id="email" @bind-Value="Usuario.Email" />        
+    </div>
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-dark ml-2" @onclick="Cancel">Cancelar</button>
+    </div>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public Usuario Usuario { get; set; }
+
+    protected override void OnInitialized()
+    {
+        
+    }
+
+    public void CreateOrUpdateUser()
+    {
+        if (Usuario.Id > 0)
+        {
+
+            Service.UpdateUser(Usuario.Id, Usuario);
+
+        }
+        else
+        {
+            Service.CreateUser(Usuario);
+
+        }
+
+        NavigationManager.NavigateTo("/Usuarios");
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/Usuarios");
+    }
+
+}

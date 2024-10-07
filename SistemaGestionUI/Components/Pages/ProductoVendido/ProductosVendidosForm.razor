@@ -1,0 +1,61 @@
+﻿@inject NavigationManager NavigationManager
+@inject ProductosVendidosService Service
+
+<h3>ProductosVendidos</h3>
+
+<EditForm Model="ProductosVendido" OnValidSubmit="CreateOrUpdateProductoVendido" FormName="productosVendidos-form">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+    <div class="form-group">
+        <label for="idProducto">IdProducto</label>            
+        <InputNumber type="number" class="form-control" id="idProducto" @bind-Value="ProductosVendido.IdProducto" />
+        
+    </div>
+    <div class="form-group">
+        <label for="stock">Stock</label>       
+        <InputNumber type="number" class="form-control" id="stock" @bind-Value="ProductosVendido.Stock" />
+        
+    </div>
+    <div class="form-group">
+        <label for="idVenta">IdVenta</label>
+         <InputNumber type="number" class="form-control" id="idVenta" @bind-Value="ProductosVendido.IdVenta" />
+    </div>
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-dark ml-2" @onclick="Cancel">Cancelar</button>
+    </div>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public ProductosVendidos ProductosVendido { get; set; }
+
+    protected override void OnInitialized()
+    {
+        
+    }
+
+    public void CreateOrUpdateProductoVendido()
+    {
+        if (ProductosVendido.Id > 0)
+        {
+
+            Service.ModificarProductoVendido(ProductosVendido.Id, ProductosVendido);
+
+        }
+        else
+        {
+            Service.CrearProductoVendido(ProductosVendido);
+
+        }
+
+        NavigationManager.NavigateTo("/productoVendido");
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/productoVendido");
+    }
+}
